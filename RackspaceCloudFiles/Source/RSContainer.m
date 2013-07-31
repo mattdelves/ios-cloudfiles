@@ -70,9 +70,10 @@
     NSMutableURLRequest *request = [self.client storageRequest:$S(@"/%@/%@", self.name, object.name) httpMethod:@"PUT"];
     
     for (NSString *key in object.metadata) {
-        [request addValue:[object.metadata valueForKey:key] forHTTPHeaderField:$S(@"X-Object-Meta-", key)];
+        [request addValue:[object.metadata valueForKey:key] forHTTPHeaderField:$S(@"X-Object-Meta-%@", key)];
     }
     [request addValue:$S(@"%i", [object.data length]) forHTTPHeaderField:@"Content-Length"];
+    [request addValue:object.content_type forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:object.data];
         
     return request;
