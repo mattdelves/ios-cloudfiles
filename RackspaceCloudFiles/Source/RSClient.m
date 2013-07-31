@@ -99,7 +99,12 @@
         [NSURLConnection sendAsynchronousRequest:objc_msgSend(sender, requestSelector, object) queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *urlResponse, NSData *data, NSError *error) {    
 
             NSHTTPURLResponse *response = (NSHTTPURLResponse *)urlResponse;
-            
+          
+            if (!data) {
+                failureHandler(response, data, error);
+                return;
+            }
+          
             if (response.statusCode >= 200 && response.statusCode <= 299) {
                 if (successHandler) {
                     successHandler(response, data, error);            
